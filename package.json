@@ -1,0 +1,43 @@
+{
+  "name": "koa-typescript-boilerplate",
+  "version": "1.0.0",
+  "description": "A typescript and koa starter for building nodejs server",
+  "keywords": [
+    "boilerplate",
+    "koa",
+    "node",
+    "prettier",
+    "starter",
+    "template",
+    "tslint",
+    "typescript"
+  ],
+  "repository": "git@github.com:zhengminhui/koa-typescript-boilerplate.git",
+  "license": "MIT",
+  "author": "zhengminhui <zhmh1025@hotmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && tslint --project . && tsc",
+    "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./app.ts",
+    "dev:ndb": "ndb nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./app.ts",
+    "fix:prettier": "prettier \"src/**/*.ts\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different"
+  },
+  "dependencies": {
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.31",
+    "ndb": "^1.0.24",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.0.3"
+  }
+}
