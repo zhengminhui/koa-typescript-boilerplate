@@ -1,7 +1,7 @@
 import Koa from 'koa';
-// import { sequelize } from '../../database';
+import { sequelize } from '../../database';
 
-async function sleep(key, delay) {
+const sleep = (key: string, delay: number) => {
   return new Promise(function(resolve, reject) {
     const startTime = new Date().getTime();
     try {
@@ -17,7 +17,7 @@ async function sleep(key, delay) {
       reject('error');
     }
   });
-}
+};
 
 /**
  *
@@ -40,9 +40,9 @@ const parallel = async (ctx: Koa.Context, next: Function) => {
   try {
     data = await Promise.all([
       sleep('a', 1000),
-      sleep('b', 1500),
-      sleep('c', 2000),
-      sleep('d', 2500),
+      sleep('b', 1000),
+      sleep('c', 1000),
+      sleep('d', 1000),
     ]);
   } catch (err) {
     console.log(err);
@@ -56,21 +56,59 @@ const parallel = async (ctx: Koa.Context, next: Function) => {
   return next();
 };
 
+const runPromiseInSequence = (arr) => {
+  return arr.reduce(
+    (promiseChain, currentFunction) => promiseChain.then(currentFunction),
+    [],
+  );
+};
+
+const serial = async (ctx: Koa.Context, next: Function) => {
+  const promiseArr = Array(4).fill(0).map((item, index) => {
+    console.log(item, index);
+    const key: string = String.fromCharCode(97 + index);
+    const delay: number = (index + 1) * 1000;
+    return sleep(key, delay);
+  });
+
+  console.log(promiseArr);
+
+  let data = [];
+  const startTime = new Date().getTime();
+  try {
+    promiseArr.reduce((p, item) => {
+      return p.then((res) => {
+        console.log(`item, ${p}, ${item}, ${res}`);
+        data.push(res);
+        return data;
+      });
+    }, Promise.resolve(1));
+  } catch (err) {
+    console.log(err);
+  }
+  const json = {
+    data,
+    title: 'serial async',
+    usedTime: `${new Date().getTime() - startTime}/ms`,
+  };
+  ctx.body = JSON.stringify(json);
+  return next();
+};
 /**
  *
  */
 const getUserList = async () => {
   let res;
   try {
-    // console.time('type=query||sql-query');
-    // res = await sequelize.query(`SELECT * FROM user_list limit 10`, {
-    //   type: sequelize.QueryTypes.SELECT,
-    // });
-    // console.timeEnd('type=query||sql-query');
+    console.time('type=query||sql-query');
+    res = await sequelize.query(`SELECT * FROM user_list limit 10`, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    console.timeEnd('type=query||sql-query');
     return res;
   } catch (e) {
     console.log('query db error', e);
   }
 };
 
-export { helloWorld, parallel };
+export { helloWorld, parallel, serial };

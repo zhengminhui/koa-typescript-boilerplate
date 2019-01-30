@@ -1,10 +1,11 @@
 import Router from 'koa-router';
-import { helloWorld, parallel } from '../controller/demo';
+import * as Demo from '../controller/demo';
 
 let router = new Router();
 
-router.get('/', helloWorld);
-router.get('/hello', helloWorld);
-router.get('/parallel', parallel);
+router.get('/', Demo.helloWorld);
+router.get('/hello', Demo.helloWorld);
+router.get('/parallel', Demo.parallel);
+router.get('/serial', Demo.serial);
 
 export { router };

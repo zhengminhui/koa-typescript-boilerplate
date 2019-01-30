@@ -1,1 +1,1 @@
-require('./app.ts');
+require('./src/app.ts');
