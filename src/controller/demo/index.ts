@@ -56,33 +56,19 @@ const parallel = async (ctx: Koa.Context, next: Function) => {
   return next();
 };
 
-const runPromiseInSequence = (arr) => {
-  return arr.reduce(
-    (promiseChain, currentFunction) => promiseChain.then(currentFunction),
-    [],
-  );
-};
-
 const serial = async (ctx: Koa.Context, next: Function) => {
   const promiseArr = Array(4).fill(0).map((item, index) => {
-    console.log(item, index);
     const key: string = String.fromCharCode(97 + index);
     const delay: number = (index + 1) * 1000;
     return sleep(key, delay);
   });
 
-  console.log(promiseArr);
-
   let data = [];
   const startTime = new Date().getTime();
   try {
-    promiseArr.reduce((p, item) => {
-      return p.then((res) => {
-        console.log(`item, ${p}, ${item}, ${res}`);
-        data.push(res);
-        return data;
-      });
-    }, Promise.resolve(1));
+    for await (const p of promiseArr) {
+      data.push(p);
+    }
   } catch (err) {
     console.log(err);
   }
