@@ -43,23 +43,23 @@
     "sequelize-typescript": "^0.6.6"
   },
   "devDependencies": {
-    "@types/koa": "^2.0.46",
+    "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^5.0.2",
-    "@types/koa-compose": "^3.2.2",
-    "@types/koa-convert": "^1.2.1",
+    "@types/koa-compose": "^3.2.5",
+    "@types/koa-convert": "^1.2.3",
     "@types/koa-helmet": "^3.1.2",
     "@types/koa-logger": "^3.1.1",
-    "@types/koa-router": "^7.0.31",
-    "@types/koa-session": "^5.7.4",
-    "@types/mysql": "^2.15.5",
+    "@types/koa-router": "^7.4.0",
+    "@types/koa-session": "^5.10.2",
+    "@types/mysql": "^2.15.10",
     "@types/node": "^10.9.4",
     "ndb": "^1.0.24",
-    "nodemon": "^1.18.4",
-    "pm2": "^3.2.4",
-    "prettier": "^1.14.2",
+    "nodemon": "^1.19.4",
+    "pm2": "^3.5.2",
+    "prettier": "^1.19.1",
     "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
+    "tslint": "^5.20.1",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.0.3"
+    "typescript": "^3.8.3"
   }
 }
