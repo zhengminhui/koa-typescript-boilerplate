@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import { sequelize } from '../../database';
+import { Observable } from 'rxjs';
 
 const sleep = (key: string, delay: number) => {
   return new Promise(function(resolve, reject) {
@@ -26,10 +27,10 @@ const sleep = (key: string, delay: number) => {
  */
 const helloWorld = async (ctx: Koa.Context, next: Function) => {
   const dbResp: any[] = await getUserList();
-  const driverInfo = dbResp.length ? dbResp[0] : {};
+  const data = dbResp.length ? dbResp[0] : {};
   ctx.body = {
+    data,
     errmsg: 'success',
-    data: driverInfo,
   };
   return next();
 };
@@ -57,11 +58,13 @@ const parallel = async (ctx: Koa.Context, next: Function) => {
 };
 
 const serial = async (ctx: Koa.Context, next: Function) => {
-  const promiseArr = Array(4).fill(0).map((item, index) => {
-    const key: string = String.fromCharCode(97 + index);
-    const delay: number = (index + 1) * 1000;
-    return sleep(key, delay);
-  });
+  const promiseArr = Array(4)
+    .fill(0)
+    .map((item, index) => {
+      const key: string = String.fromCharCode(97 + index);
+      const delay: number = (index + 1) * 1000;
+      return sleep(key, delay);
+    });
 
   let data = [];
   const startTime = new Date().getTime();
@@ -97,4 +100,35 @@ const getUserList = async () => {
   }
 };
 
-export { helloWorld, parallel, serial };
+const observable = async (ctx: Koa.Context, next: Function) => {
+  const data = [];
+  const ob = new Observable((subscriber) => {
+    subscriber.next(1);
+    subscriber.next(2);
+    subscriber.next(3);
+    setTimeout(() => {
+      subscriber.next(4);
+      subscriber.complete();
+    }, 1000);
+  });
+  const startTime = new Date().getTime();
+  ob.subscribe({
+    next(x) {
+      console.log('got value ' + x);
+    },
+    error(err) {
+      console.error('something wrong occurred: ' + err);
+    },
+    complete() {
+      console.log('done');
+    },
+  });
+  const json = {
+    title: 'observable',
+    usedTime: `${new Date().getTime() - startTime}/ms`,
+  };
+  ctx.body = JSON.stringify(json);;
+  return next();
+};
+
+export { helloWorld, parallel, serial, observable };
