@@ -20,7 +20,7 @@
   "scripts": {
     "build": "pm2 install typescript && pm2 start ecosystem.config.js",
     "dev": "nodemon",
-    "dev:ndb": "ndb nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./app.ts",
+    "dev:ndb": "ndb nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./src/app.ts",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
     "test": "echo \"Error: no test specified\" && exit 1",

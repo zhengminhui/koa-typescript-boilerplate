@@ -4,9 +4,10 @@ import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
 import helmet from 'koa-helmet';
 import logger from 'koa-logger';
-import { router } from './src/router';
+import { router } from './router';
 
 const app = new Koa();
+
 app.use(helmet());
 
 const port = process.env.PORT || 8080;
@@ -46,8 +47,8 @@ app.use(
 );
 
 app.use(bodyParser());
-app.use(router.middleware());
 app.use(logger());
+app.use(router.middleware());
 
 app.listen(port, () => {
   console.log(`server started: localhost:${port}`);

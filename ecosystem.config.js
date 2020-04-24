@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'koa-typescript',
-      script: './app.ts',
+      script: './src/app.ts',
       exec_mode: 'fork_mode',
       max_memory_restart: '1G',
       autorestart: true,
